@@ -162,7 +162,7 @@ st.markdown("""
     }
 
     /* Botão de envio */
-    .stButton button {
+    .stButton button, .stFormSubmitButton button {
         background: linear-gradient(135deg, #5D3A9B 0%, #8B5FBF 100%) !important;
         color: white !important;
         border: none !important;
@@ -175,7 +175,7 @@ st.markdown("""
         transition: all 0.2s !important;
         box-shadow: 0 4px 16px rgba(93, 58, 155, 0.25) !important;
     }
-    .stButton button:hover {
+    .stButton button:hover, .stFormSubmitButton button:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 24px rgba(93, 58, 155, 0.35) !important;
     }
@@ -249,12 +249,13 @@ def ja_respondeu():
     return ARQUIVO_RESPOSTAS.exists()
 
 # ============================================================
-# VERIFICAR SE JÁ RESPONDEU
+# VERIFICAR MODO E ESTADO
 # ============================================================
-# Permite "ver respostas" via query param ?admin=elaine
 query_params = st.query_params
 modo_admin = query_params.get("admin") == "elaine"
+modo_preview = query_params.get("preview") == "true"
 
+# ----- MODO ADMIN -----
 if modo_admin:
     st.markdown("""
     <div class="nextgen-header">
@@ -274,10 +275,16 @@ if modo_admin:
         for pergunta, resposta in dados["respostas"].items():
             st.markdown(f"**{pergunta}**")
             if isinstance(resposta, list):
-                for item in resposta:
-                    st.markdown(f"- {item}")
+                if len(resposta) == 0:
+                    st.markdown("_(não respondido)_")
+                else:
+                    for item in resposta:
+                        st.markdown(f"- {item}")
             else:
-                st.markdown(f"{resposta}")
+                if not resposta:
+                    st.markdown("_(em branco)_")
+                else:
+                    st.markdown(f"{resposta}")
             st.markdown("")
 
         # Botão para baixar JSON
@@ -287,11 +294,19 @@ if modo_admin:
             file_name=f"paula_respostas_{datetime.now().strftime('%Y%m%d')}.json",
             mime="application/json"
         )
+
+        st.markdown("---")
+        st.markdown("##### Limpar resposta (pra resetar antes de enviar pra Paula)")
+        if st.button("🗑 Apagar resposta atual"):
+            ARQUIVO_RESPOSTAS.unlink()
+            st.success("Resposta apagada. O formulário está pronto pra ser respondido de novo.")
+            st.rerun()
     else:
         st.info("Nenhuma resposta recebida ainda.")
     st.stop()
 
-if ja_respondeu():
+# ----- MODO RESPONDIDO -----
+if ja_respondeu() and not modo_preview:
     st.markdown("""
     <div class="success-card">
         <div class="success-check">✓</div>
@@ -340,24 +355,25 @@ with st.form("formulario_paula", clear_on_submit=False):
     </div>
     """, unsafe_allow_html=True)
 
-    # Q1
+    # Q1 — escolha única com Outro
     q1 = "Você se descreveu como dinâmica e falante. Em momentos de pressão no trabalho, você tende a:"
-    respostas[q1] = st.radio(
-        q1,
-        ["Falar mais e processar em voz alta",
-         "Me recolher e processar internamente",
-         "Buscar alguém pra dividir e pensar junto",
-         "Acelerar a execução pra dar conta",
-         "Outro"],
-        index=None,
-        label_visibility="visible"
-    )
-    if respostas[q1] == "Outro":
-        outro_q1 = st.text_input("Conta aqui:", key="outro_q1")
-        if outro_q1:
-            respostas[q1] = f"Outro: {outro_q1}"
+    opcoes_q1 = [
+        "Falar mais e processar em voz alta",
+        "Me recolher e processar internamente",
+        "Buscar alguém pra dividir e pensar junto",
+        "Acelerar a execução pra dar conta",
+        "Outro"
+    ]
+    escolha_q1 = st.radio(q1, opcoes_q1, index=None, key="q1_radio")
+    outro_q1_texto = ""
+    if escolha_q1 == "Outro":
+        outro_q1_texto = st.text_input("Conta aqui o que é:", key="q1_outro", placeholder="Escreva sua resposta...")
+    if escolha_q1 == "Outro" and outro_q1_texto:
+        respostas[q1] = f"Outro: {outro_q1_texto}"
+    else:
+        respostas[q1] = escolha_q1
 
-    # Q2
+    # Q2 — múltipla escolha com Outro
     q2 = "Você recusou a posição comercial pura. Pensando no que mais te incomoda em meta dura, marque o que pesa de verdade (pode marcar mais de uma):"
     st.markdown(f"<div style='font-size:15px; font-weight:500; color:#2c2c2a; margin-top:20px; margin-bottom:8px;'>{q2}</div>", unsafe_allow_html=True)
     opcoes_q2 = [
@@ -372,29 +388,34 @@ with st.form("formulario_paula", clear_on_submit=False):
     for opcao in opcoes_q2:
         if st.checkbox(opcao, key=f"q2_{opcao}"):
             selecionados_q2.append(opcao)
-    outro_q2 = st.text_input("Outro (opcional):", key="outro_q2_text")
-    if outro_q2:
-        selecionados_q2.append(f"Outro: {outro_q2}")
+    # Checkbox "Outro" + campo de texto que só aparece quando marcado
+    marcou_outro_q2 = st.checkbox("Outro", key="q2_outro_check")
+    if marcou_outro_q2:
+        outro_q2_texto = st.text_input("Conta aqui o que é:", key="q2_outro_text", placeholder="Escreva sua resposta...")
+        if outro_q2_texto:
+            selecionados_q2.append(f"Outro: {outro_q2_texto}")
     respostas[q2] = selecionados_q2
 
-    # Q3
+    # Q3 — escolha única com Outro
     q3 = "Quando uma análise sua não é usada por quem deveria usar, o que vem primeiro em você:"
-    respostas[q3] = st.radio(
-        q3,
-        ["Frustração com quem não usou",
-         "Autocrítica — talvez eu não tenha apresentado bem",
-         "Vontade de explicar melhor pra próxima",
-         "Aceitação — faz parte do processo",
-         "Cansaço — já vi esse filme antes",
-         "Outro"],
-        index=None
-    )
-    if respostas[q3] == "Outro":
-        outro_q3 = st.text_input("Conta aqui:", key="outro_q3")
-        if outro_q3:
-            respostas[q3] = f"Outro: {outro_q3}"
+    opcoes_q3 = [
+        "Frustração com quem não usou",
+        "Autocrítica — talvez eu não tenha apresentado bem",
+        "Vontade de explicar melhor pra próxima",
+        "Aceitação — faz parte do processo",
+        "Cansaço — já vi esse filme antes",
+        "Outro"
+    ]
+    escolha_q3 = st.radio(q3, opcoes_q3, index=None, key="q3_radio")
+    outro_q3_texto = ""
+    if escolha_q3 == "Outro":
+        outro_q3_texto = st.text_input("Conta aqui o que é:", key="q3_outro", placeholder="Escreva sua resposta...")
+    if escolha_q3 == "Outro" and outro_q3_texto:
+        respostas[q3] = f"Outro: {outro_q3_texto}"
+    else:
+        respostas[q3] = escolha_q3
 
-    # Q4
+    # Q4 — múltipla escolha com Outro
     q4 = "O que mais te energiza no trabalho hoje (marca quantas quiser):"
     st.markdown(f"<div style='font-size:15px; font-weight:500; color:#2c2c2a; margin-top:20px; margin-bottom:8px;'>{q4}</div>", unsafe_allow_html=True)
     opcoes_q4 = [
@@ -410,9 +431,12 @@ with st.form("formulario_paula", clear_on_submit=False):
     for opcao in opcoes_q4:
         if st.checkbox(opcao, key=f"q4_{opcao}"):
             selecionados_q4.append(opcao)
-    outro_q4 = st.text_input("Outro (opcional):", key="outro_q4_text")
-    if outro_q4:
-        selecionados_q4.append(f"Outro: {outro_q4}")
+    # Checkbox "Outro" + campo de texto que só aparece quando marcado
+    marcou_outro_q4 = st.checkbox("Outro", key="q4_outro_check")
+    if marcou_outro_q4:
+        outro_q4_texto = st.text_input("Conta aqui o que é:", key="q4_outro_text", placeholder="Escreva sua resposta...")
+        if outro_q4_texto:
+            selecionados_q4.append(f"Outro: {outro_q4_texto}")
     respostas[q4] = selecionados_q4
 
     # ---------- BLOCO 2 ----------
@@ -448,9 +472,12 @@ with st.form("formulario_paula", clear_on_submit=False):
         if marcado:
             selecionados_q5.append(tema)
 
-    outro_q5 = st.text_input("Outro tema que eu deveria ter colocado e não coloquei:", key="outro_q5_text")
-    if outro_q5:
-        selecionados_q5.append(f"Outro: {outro_q5}")
+    # Checkbox "Outro" + campo de texto que só aparece quando marcado
+    marcou_outro_q5 = st.checkbox("Outro tema que eu deveria ter colocado e não coloquei", key="q5_outro_check")
+    if marcou_outro_q5:
+        outro_q5_texto = st.text_input("Conta aqui o tema:", key="q5_outro_text", placeholder="Escreva o tema...")
+        if outro_q5_texto:
+            selecionados_q5.append(f"Outro: {outro_q5_texto}")
     respostas[q5] = selecionados_q5
 
     # ---------- BLOCO 3 ----------
