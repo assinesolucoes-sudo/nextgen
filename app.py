@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # ============================================================
-# IDENTIDADE VISUAL — REDESIGN ELEGANTE
+# IDENTIDADE VISUAL
 # ============================================================
 st.markdown("""
 <style>
@@ -23,15 +23,11 @@ st.markdown("""
     .stApp {
         background: linear-gradient(180deg, #faf9fc 0%, #f3eefa 100%);
     }
-
-    /* Container principal mais largo */
     .block-container {
         padding-top: 2rem !important;
         padding-bottom: 4rem !important;
         max-width: 820px !important;
     }
-
-    /* Esconde elementos padrão */
     #MainMenu, footer, header { visibility: hidden; }
 
     /* ===== HEADER PRINCIPAL ===== */
@@ -52,15 +48,6 @@ st.markdown("""
         width: 60%;
         height: 200%;
         background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%);
-    }
-    .nextgen-header::after {
-        content: '';
-        position: absolute;
-        bottom: -40%;
-        left: -10%;
-        width: 50%;
-        height: 150%;
-        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
     }
     .nextgen-brand {
         color: rgba(255,255,255,0.85);
@@ -120,7 +107,7 @@ st.markdown("""
         transition: width 0.5s ease;
     }
 
-    /* ===== CARD DE INTRODUÇÃO ===== */
+    /* ===== INTRODUÇÃO ===== */
     .intro-card {
         background: white;
         border-radius: 20px;
@@ -143,7 +130,7 @@ st.markdown("""
         color: white;
         padding: 24px 28px;
         border-radius: 16px;
-        margin: 48px 0 24px 0;
+        margin: 40px 0 8px 0;
         box-shadow: 0 6px 24px rgba(93, 58, 155, 0.15);
         position: relative;
         overflow: hidden;
@@ -158,7 +145,7 @@ st.markdown("""
         background: radial-gradient(circle at right, rgba(255,255,255,0.15) 0%, transparent 70%);
     }
     .block-strip-label {
-        color: rgba(255,255,255,0.8);
+        color: rgba(255,255,255,0.85);
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 2.5px;
@@ -180,63 +167,53 @@ st.markdown("""
         line-height: 1.65;
         margin: 0;
         position: relative;
-        max-width: 90%;
+        max-width: 95%;
     }
 
-    /* ===== CARD DE PERGUNTA ===== */
-    .pergunta-card {
-        background: white;
-        border-radius: 18px;
-        padding: 28px 32px;
-        margin: 20px 0;
-        box-shadow: 0 4px 20px rgba(93, 58, 155, 0.07);
-        border: 1px solid #f0e8f9;
-        transition: all 0.3s ease;
+    /* ===== CARD VISUAL VIA STREAMLIT CONTAINER ===== */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background: white !important;
+        border-radius: 18px !important;
+        padding: 20px 28px !important;
+        margin: 16px 0 !important;
+        box-shadow: 0 4px 20px rgba(93, 58, 155, 0.07) !important;
+        border: 1px solid #f0e8f9 !important;
+        transition: all 0.3s ease !important;
     }
-    .pergunta-card:hover {
-        box-shadow: 0 8px 28px rgba(93, 58, 155, 0.12);
-        transform: translateY(-2px);
+    div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+        box-shadow: 0 8px 28px rgba(93, 58, 155, 0.12) !important;
     }
+
+    /* ===== TÍTULO DA PERGUNTA ===== */
     .pergunta-titulo {
         color: #2c2c2a;
-        font-size: 18px !important;
-        font-weight: 600 !important;
+        font-size: 18px;
+        font-weight: 600;
         line-height: 1.5;
         margin: 0 0 18px 0;
         letter-spacing: -0.2px;
     }
-    .pergunta-sub {
-        color: #5F5E5A;
-        font-size: 13px;
-        font-style: italic;
-        margin: -10px 0 16px 0;
-    }
 
-    /* ===== OVERRIDE STREAMLIT — RADIO E CHECKBOX ===== */
-    /* Esconde labels duplicados do Streamlit */
-    div[data-testid="stRadio"] > label, 
-    div[data-testid="stCheckbox"] > label {
-        display: none !important;
-    }
-
-    /* Container dos radios sem o card branco extra */
+    /* ===== RADIO E CHECKBOX — TEXTOS BEM VISÍVEIS ===== */
+    /* Radio container */
     div[data-testid="stRadio"] > div {
         background: transparent !important;
         padding: 0 !important;
         border: none !important;
-        gap: 4px !important;
+        gap: 6px !important;
     }
-
-    /* Cada opção de radio */
-    div[data-testid="stRadio"] label {
-        padding: 14px 18px !important;
-        background: #faf9fc !important;
-        border-radius: 12px !important;
-        margin: 4px 0 !important;
-        border: 1.5px solid transparent !important;
-        transition: all 0.2s ease !important;
+    /* Radio labels (texto da opção) */
+    div[data-testid="stRadio"] label p {
         font-size: 15px !important;
         color: #2c2c2a !important;
+        margin: 0 !important;
+    }
+    div[data-testid="stRadio"] label {
+        padding: 12px 16px !important;
+        background: #faf9fc !important;
+        border-radius: 12px !important;
+        border: 1.5px solid transparent !important;
+        transition: all 0.2s ease !important;
         cursor: pointer !important;
     }
     div[data-testid="stRadio"] label:hover {
@@ -244,10 +221,10 @@ st.markdown("""
         border-color: #d4c3e8 !important;
     }
 
-    /* Cada opção de checkbox */
+    /* Checkbox container e label */
     div[data-testid="stCheckbox"] {
         background: #faf9fc !important;
-        padding: 14px 18px !important;
+        padding: 12px 16px !important;
         border-radius: 12px !important;
         margin: 6px 0 !important;
         border: 1.5px solid transparent !important;
@@ -257,35 +234,10 @@ st.markdown("""
         background: #f0e8f9 !important;
         border-color: #d4c3e8 !important;
     }
-    div[data-testid="stCheckbox"] label {
+    div[data-testid="stCheckbox"] label p {
         font-size: 15px !important;
         color: #2c2c2a !important;
-    }
-
-    /* ===== CARD DE TEMA/FORMATO (com descrição) ===== */
-    .opcao-rica {
-        background: #faf9fc;
-        padding: 16px 20px;
-        border-radius: 12px;
-        margin: 8px 0;
-        border: 1.5px solid transparent;
-        transition: all 0.2s ease;
-    }
-    .opcao-rica:hover {
-        background: #f0e8f9;
-        border-color: #d4c3e8;
-    }
-    .opcao-titulo {
-        font-size: 15px;
-        font-weight: 600;
-        color: #2c2c2a;
-        margin: 0;
-    }
-    .opcao-desc {
-        font-size: 13px;
-        color: #5F5E5A;
-        line-height: 1.55;
-        margin: 4px 0 0 0;
+        margin: 0 !important;
     }
 
     /* ===== TEXTAREA ===== */
@@ -304,11 +256,8 @@ st.markdown("""
         box-shadow: 0 0 0 4px rgba(139, 95, 191, 0.12) !important;
         background: white !important;
     }
-    .stTextArea label {
-        display: none !important;
-    }
 
-    /* ===== TEXT INPUT (campo "Outro") ===== */
+    /* ===== TEXT INPUT ===== */
     .stTextInput input {
         background: white !important;
         border: 1.5px solid #d4c3e8 !important;
@@ -321,11 +270,10 @@ st.markdown("""
         border-color: #8B5FBF !important;
         box-shadow: 0 0 0 4px rgba(139, 95, 191, 0.12) !important;
     }
-    .stTextInput label {
+    .stTextInput label p {
         font-size: 13px !important;
         color: #5D3A9B !important;
         font-weight: 600 !important;
-        margin-bottom: 6px !important;
     }
 
     /* ===== BOTÃO ENVIAR ===== */
@@ -346,9 +294,6 @@ st.markdown("""
     .stButton button:hover {
         transform: translateY(-3px) !important;
         box-shadow: 0 10px 32px rgba(93, 58, 155, 0.4) !important;
-    }
-    .stButton button:active {
-        transform: translateY(-1px) !important;
     }
 
     /* ===== SUCESSO ===== */
@@ -396,15 +341,21 @@ st.markdown("""
         font-size: 38px;
         color: white;
         position: relative;
-        backdrop-filter: blur(10px);
     }
 
-    /* ===== DIVISOR ENTRE PERGUNTAS ===== */
-    .pergunta-divider {
-        height: 1px;
-        background: linear-gradient(90deg, transparent, #E8DDF5, transparent);
+    /* ===== TEMA/FORMATO COM DESCRIÇÃO ===== */
+    .opcao-titulo {
+        font-size: 15px;
+        font-weight: 600;
+        color: #2c2c2a;
         margin: 0;
-        border: none;
+        line-height: 1.4;
+    }
+    .opcao-desc {
+        font-size: 13px;
+        color: #5F5E5A;
+        line-height: 1.55;
+        margin: 4px 0 0 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -518,104 +469,64 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ============================================================
-# INICIALIZA RESPOSTAS NO SESSION STATE
-# ============================================================
-if 'respostas_dict' not in st.session_state:
-    st.session_state.respostas_dict = {}
-
-respostas = {}
-
-# ============================================================
-# FUNÇÕES AUXILIARES PRA CONTAR PROGRESSO
+# PROGRESSO
 # ============================================================
 def contar_progresso():
-    """Conta quantas perguntas têm resposta válida (de 8)"""
     total = 8
     respondidas = 0
-
-    # Q1
     if st.session_state.get("q1_radio") is not None:
         if st.session_state.get("q1_radio") != "Outro" or st.session_state.get("q1_outro", "").strip():
             respondidas += 1
-
-    # Q2
-    q2_alguma = any(st.session_state.get(f"q2_{op}", False) for op in [
-        "A pressão por número mês a mês", "A competição entre colegas",
+    opcoes_q2_list = ["A pressão por número mês a mês", "A competição entre colegas",
         "O relacionamento com cliente ficar transacional", "A sensação de não controlar o resultado",
-        "A exposição em rankings e dashboards", "Ter que defender produto sem acreditar"
-    ])
-    if q2_alguma or (st.session_state.get("q2_outro_check") and st.session_state.get("q2_outro_text", "").strip()):
+        "A exposição em rankings e dashboards", "Ter que defender produto sem acreditar"]
+    if any(st.session_state.get(f"q2_{op}", False) for op in opcoes_q2_list) or \
+       (st.session_state.get("q2_outro_check") and st.session_state.get("q2_outro_text", "").strip()):
         respondidas += 1
-
-    # Q3
     if st.session_state.get("q3_radio") is not None:
         if st.session_state.get("q3_radio") != "Outro" or st.session_state.get("q3_outro", "").strip():
             respondidas += 1
-
-    # Q4
-    q4_alguma = any(st.session_state.get(f"q4_{op}", False) for op in [
-        "Resolver um problema complexo", "Ver alguém usando o que entreguei",
-        "Aprender algo novo", "Conexão com pessoas",
-        "Antecipar algo que ninguém viu", "Ter autonomia pra decidir",
-        "Ser reconhecida pelo que faço"
-    ])
-    if q4_alguma or (st.session_state.get("q4_outro_check") and st.session_state.get("q4_outro_text", "").strip()):
+    opcoes_q4_list = ["Resolver um problema complexo", "Ver alguém usando o que entreguei",
+        "Aprender algo novo", "Conexão com pessoas", "Antecipar algo que ninguém viu",
+        "Ter autonomia pra decidir", "Ser reconhecida pelo que faço"]
+    if any(st.session_state.get(f"q4_{op}", False) for op in opcoes_q4_list) or \
+       (st.session_state.get("q4_outro_check") and st.session_state.get("q4_outro_text", "").strip()):
         respondidas += 1
-
-    # Q5
-    temas_lista = [
-        "Ler o cliente por trás do CRM",
-        "A ponte entre Inteligência Comercial e operação",
+    temas_lista = ["Ler o cliente por trás do CRM", "A ponte entre Inteligência Comercial e operação",
         "Posicionamento de quem vem do RH em ambiente técnico-comercial",
         "Tradução de análise preditiva em recomendação executiva",
         "Uso estratégico de IA na rotina analítica",
         "Desenhar o lugar profissional ideal dentro da TBC",
         "Leitura de negócio do cliente final",
-        "Carreira como projeto — pensar profissão com mentalidade de produto"
-    ]
-    q5_alguma = any(st.session_state.get(f"tema_{t}", False) for t in temas_lista)
-    if q5_alguma or (st.session_state.get("q5_outro_check") and st.session_state.get("q5_outro_text", "").strip()):
+        "Carreira como projeto — pensar profissão com mentalidade de produto"]
+    if any(st.session_state.get(f"tema_{t}", False) for t in temas_lista) or \
+       (st.session_state.get("q5_outro_check") and st.session_state.get("q5_outro_text", "").strip()):
         respondidas += 1
-
-    # Q6
-    formatos_lista = [
-        "Conversa aberta com pauta solta", "Estudo de caso real",
+    formatos_lista = ["Conversa aberta com pauta solta", "Estudo de caso real",
         "Análise conjunta de uma entrega sua", "Simulação",
         "Shadowing reverso (você me observa)", "Shadowing direto (eu te observo)",
-        "Sessão de provocação", "Co-construção de material"
-    ]
+        "Sessão de provocação", "Co-construção de material"]
     if any(st.session_state.get(f"formato_{f}", False) for f in formatos_lista):
         respondidas += 1
-
-    # Q7
     if st.session_state.get("q7", "").strip():
         respondidas += 1
-
-    # Q8
     if st.session_state.get("q8", "").strip():
         respondidas += 1
-
     return respondidas, total
 
-# ============================================================
-# BARRA DE PROGRESSO
-# ============================================================
-progresso_placeholder = st.empty()
-
-def renderizar_progresso():
-    respondidas, total = contar_progresso()
-    porcentagem = int((respondidas / total) * 100)
-    progresso_placeholder.markdown(f"""
-    <div class="progress-container">
-        <div class="progress-text">{respondidas} de {total} respondidas</div>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: {porcentagem}%;"></div>
-        </div>
-        <div class="progress-text">{porcentagem}%</div>
+respondidas, total = contar_progresso()
+porcentagem = int((respondidas / total) * 100)
+st.markdown(f"""
+<div class="progress-container">
+    <div class="progress-text">{respondidas} de {total} respondidas</div>
+    <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: {porcentagem}%;"></div>
     </div>
-    """, unsafe_allow_html=True)
+    <div class="progress-text">{porcentagem}%</div>
+</div>
+""", unsafe_allow_html=True)
 
-renderizar_progresso()
+respostas = {}
 
 # ============================================================
 # BLOCO 1
@@ -628,103 +539,64 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ---- Q1 ----
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">Você se descreveu como dinâmica e falante. Em momentos de pressão no trabalho, você tende a:</p>', unsafe_allow_html=True)
-q1_texto = "Você se descreveu como dinâmica e falante. Em momentos de pressão no trabalho, você tende a:"
-opcoes_q1 = [
-    "Falar mais e processar em voz alta",
-    "Me recolher e processar internamente",
-    "Buscar alguém pra dividir e pensar junto",
-    "Acelerar a execução pra dar conta",
-    "Outro"
-]
-escolha_q1 = st.radio("Q1", opcoes_q1, index=None, key="q1_radio", label_visibility="collapsed")
-if escolha_q1 == "Outro":
-    outro_q1 = st.text_input("Conta aqui o que é:", key="q1_outro", placeholder="Escreva sua resposta...")
-    if outro_q1:
-        respostas[q1_texto] = f"Outro: {outro_q1}"
-    else:
-        respostas[q1_texto] = "Outro"
-elif escolha_q1:
-    respostas[q1_texto] = escolha_q1
-st.markdown('</div>', unsafe_allow_html=True)
+# Q1
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">Você se descreveu como dinâmica e falante. Em momentos de pressão no trabalho, você tende a:</p>', unsafe_allow_html=True)
+    q1_texto = "Você se descreveu como dinâmica e falante. Em momentos de pressão no trabalho, você tende a:"
+    opcoes_q1 = ["Falar mais e processar em voz alta", "Me recolher e processar internamente",
+                 "Buscar alguém pra dividir e pensar junto", "Acelerar a execução pra dar conta", "Outro"]
+    escolha_q1 = st.radio("Q1", opcoes_q1, index=None, key="q1_radio", label_visibility="collapsed")
+    if escolha_q1 == "Outro":
+        outro_q1 = st.text_input("Conta aqui o que é:", key="q1_outro", placeholder="Escreva sua resposta...")
+        respostas[q1_texto] = f"Outro: {outro_q1}" if outro_q1 else "Outro"
+    elif escolha_q1:
+        respostas[q1_texto] = escolha_q1
 
-# ---- Q2 ----
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">Você recusou a posição comercial pura. Pensando no que mais te incomoda em meta dura, marque o que pesa de verdade (pode marcar mais de uma):</p>', unsafe_allow_html=True)
-q2_texto = "Você recusou a posição comercial pura. Pensando no que mais te incomoda em meta dura, marque o que pesa de verdade (pode marcar mais de uma):"
-opcoes_q2 = [
-    "A pressão por número mês a mês",
-    "A competição entre colegas",
-    "O relacionamento com cliente ficar transacional",
-    "A sensação de não controlar o resultado",
-    "A exposição em rankings e dashboards",
-    "Ter que defender produto sem acreditar"
-]
-selecionados_q2 = []
-for opcao in opcoes_q2:
-    if st.checkbox(opcao, key=f"q2_{opcao}"):
-        selecionados_q2.append(opcao)
-marcou_outro_q2 = st.checkbox("Outro", key="q2_outro_check")
-if marcou_outro_q2:
-    outro_q2 = st.text_input("Conta aqui o que é:", key="q2_outro_text", placeholder="Escreva sua resposta...")
-    if outro_q2:
-        selecionados_q2.append(f"Outro: {outro_q2}")
-    else:
-        selecionados_q2.append("Outro")
-respostas[q2_texto] = selecionados_q2
-st.markdown('</div>', unsafe_allow_html=True)
+# Q2
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">Você recusou a posição comercial pura. Pensando no que mais te incomoda em meta dura, marque o que pesa de verdade (pode marcar mais de uma):</p>', unsafe_allow_html=True)
+    q2_texto = "Você recusou a posição comercial pura. Pensando no que mais te incomoda em meta dura, marque o que pesa de verdade (pode marcar mais de uma):"
+    opcoes_q2 = ["A pressão por número mês a mês", "A competição entre colegas",
+                 "O relacionamento com cliente ficar transacional", "A sensação de não controlar o resultado",
+                 "A exposição em rankings e dashboards", "Ter que defender produto sem acreditar"]
+    selecionados_q2 = []
+    for opcao in opcoes_q2:
+        if st.checkbox(opcao, key=f"q2_{opcao}"):
+            selecionados_q2.append(opcao)
+    if st.checkbox("Outro", key="q2_outro_check"):
+        outro_q2 = st.text_input("Conta aqui o que é:", key="q2_outro_text", placeholder="Escreva sua resposta...")
+        selecionados_q2.append(f"Outro: {outro_q2}" if outro_q2 else "Outro")
+    respostas[q2_texto] = selecionados_q2
 
-# ---- Q3 ----
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">Quando uma análise sua não é usada por quem deveria usar, o que vem primeiro em você:</p>', unsafe_allow_html=True)
-q3_texto = "Quando uma análise sua não é usada por quem deveria usar, o que vem primeiro em você:"
-opcoes_q3 = [
-    "Frustração com quem não usou",
-    "Autocrítica — talvez eu não tenha apresentado bem",
-    "Vontade de explicar melhor pra próxima",
-    "Aceitação — faz parte do processo",
-    "Cansaço — já vi esse filme antes",
-    "Outro"
-]
-escolha_q3 = st.radio("Q3", opcoes_q3, index=None, key="q3_radio", label_visibility="collapsed")
-if escolha_q3 == "Outro":
-    outro_q3 = st.text_input("Conta aqui o que é:", key="q3_outro", placeholder="Escreva sua resposta...")
-    if outro_q3:
-        respostas[q3_texto] = f"Outro: {outro_q3}"
-    else:
-        respostas[q3_texto] = "Outro"
-elif escolha_q3:
-    respostas[q3_texto] = escolha_q3
-st.markdown('</div>', unsafe_allow_html=True)
+# Q3
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">Quando uma análise sua não é usada por quem deveria usar, o que vem primeiro em você:</p>', unsafe_allow_html=True)
+    q3_texto = "Quando uma análise sua não é usada por quem deveria usar, o que vem primeiro em você:"
+    opcoes_q3 = ["Frustração com quem não usou", "Autocrítica — talvez eu não tenha apresentado bem",
+                 "Vontade de explicar melhor pra próxima", "Aceitação — faz parte do processo",
+                 "Cansaço — já vi esse filme antes", "Outro"]
+    escolha_q3 = st.radio("Q3", opcoes_q3, index=None, key="q3_radio", label_visibility="collapsed")
+    if escolha_q3 == "Outro":
+        outro_q3 = st.text_input("Conta aqui o que é:", key="q3_outro", placeholder="Escreva sua resposta...")
+        respostas[q3_texto] = f"Outro: {outro_q3}" if outro_q3 else "Outro"
+    elif escolha_q3:
+        respostas[q3_texto] = escolha_q3
 
-# ---- Q4 ----
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">O que mais te energiza no trabalho hoje (marca quantas quiser):</p>', unsafe_allow_html=True)
-q4_texto = "O que mais te energiza no trabalho hoje (marca quantas quiser):"
-opcoes_q4 = [
-    "Resolver um problema complexo",
-    "Ver alguém usando o que entreguei",
-    "Aprender algo novo",
-    "Conexão com pessoas",
-    "Antecipar algo que ninguém viu",
-    "Ter autonomia pra decidir",
-    "Ser reconhecida pelo que faço"
-]
-selecionados_q4 = []
-for opcao in opcoes_q4:
-    if st.checkbox(opcao, key=f"q4_{opcao}"):
-        selecionados_q4.append(opcao)
-marcou_outro_q4 = st.checkbox("Outro", key="q4_outro_check")
-if marcou_outro_q4:
-    outro_q4 = st.text_input("Conta aqui o que é:", key="q4_outro_text", placeholder="Escreva sua resposta...")
-    if outro_q4:
-        selecionados_q4.append(f"Outro: {outro_q4}")
-    else:
-        selecionados_q4.append("Outro")
-respostas[q4_texto] = selecionados_q4
-st.markdown('</div>', unsafe_allow_html=True)
+# Q4
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">O que mais te energiza no trabalho hoje (marca quantas quiser):</p>', unsafe_allow_html=True)
+    q4_texto = "O que mais te energiza no trabalho hoje (marca quantas quiser):"
+    opcoes_q4 = ["Resolver um problema complexo", "Ver alguém usando o que entreguei",
+                 "Aprender algo novo", "Conexão com pessoas", "Antecipar algo que ninguém viu",
+                 "Ter autonomia pra decidir", "Ser reconhecida pelo que faço"]
+    selecionados_q4 = []
+    for opcao in opcoes_q4:
+        if st.checkbox(opcao, key=f"q4_{opcao}"):
+            selecionados_q4.append(opcao)
+    if st.checkbox("Outro", key="q4_outro_check"):
+        outro_q4 = st.text_input("Conta aqui o que é:", key="q4_outro_text", placeholder="Escreva sua resposta...")
+        selecionados_q4.append(f"Outro: {outro_q4}" if outro_q4 else "Outro")
+    respostas[q4_texto] = selecionados_q4
 
 # ============================================================
 # BLOCO 2
@@ -737,40 +609,28 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">Quais temas você quer aprofundar nas mentorias:</p>', unsafe_allow_html=True)
-q5_texto = "Quais temas você quer aprofundar nas mentorias:"
-
-temas = [
-    ("Ler o cliente por trás do CRM", "Ir além do dado: o que faz uma conta fechar ou travar, o que está por trás dos números."),
-    ("A ponte entre Inteligência Comercial e operação", "Como o consultor de campo recebe (ou ignora) o que você entrega. Por que análise vira ação ou vira slide."),
-    ("Posicionamento de quem vem do RH em ambiente técnico-comercial", "Construir autoridade sem perder o jeito acolhedor. Sair do lugar de 'a menina simpática' pra 'a referência analítica'."),
-    ("Tradução de análise preditiva em recomendação executiva", "Pegar o que você entrega no operacional e transformar em insumo que muda decisão de gestor."),
-    ("Uso estratégico de IA na rotina analítica", "Trocar fluxos, testar abordagens, pensar onde IA agrega e onde vira ruído. Conversa entre duas pessoas que já usam."),
-    ("Desenhar o lugar profissional ideal dentro da TBC", "Mapear juntas qual carreira combina seus 3 mundos (psicologia + tecnologia + comercial) sem virar comercial puro nem voltar pro RH."),
-    ("Leitura de negócio do cliente final", "Como uma empresa-cliente realmente usa (ou não usa) o que a TBC entrega — pelo olhar de quem está hoje do lado do cliente."),
-    ("Carreira como projeto — pensar profissão com mentalidade de produto", "Ler oportunidade, se posicionar, pensar carreira com a mesma estratégia que se pensa um produto.")
-]
-
-selecionados_q5 = []
-for tema, descricao in temas:
-    col1, col2 = st.columns([1, 22])
-    with col1:
-        marcado = st.checkbox(" ", key=f"tema_{tema}", label_visibility="collapsed")
-    with col2:
-        st.markdown(f'<div class="opcao-titulo">{tema}</div><div class="opcao-desc">{descricao}</div>', unsafe_allow_html=True)
-    if marcado:
-        selecionados_q5.append(tema)
-
-marcou_outro_q5 = st.checkbox("Outro tema que eu deveria ter colocado e não coloquei", key="q5_outro_check")
-if marcou_outro_q5:
-    outro_q5 = st.text_input("Conta aqui o tema:", key="q5_outro_text", placeholder="Escreva o tema...")
-    if outro_q5:
-        selecionados_q5.append(f"Outro: {outro_q5}")
-    else:
-        selecionados_q5.append("Outro")
-respostas[q5_texto] = selecionados_q5
-st.markdown('</div>', unsafe_allow_html=True)
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">Quais temas você quer aprofundar nas mentorias:</p>', unsafe_allow_html=True)
+    q5_texto = "Quais temas você quer aprofundar nas mentorias:"
+    temas = [
+        ("Ler o cliente por trás do CRM", "Ir além do dado: o que faz uma conta fechar ou travar, o que está por trás dos números."),
+        ("A ponte entre Inteligência Comercial e operação", "Como o consultor de campo recebe (ou ignora) o que você entrega. Por que análise vira ação ou vira slide."),
+        ("Posicionamento de quem vem do RH em ambiente técnico-comercial", "Construir autoridade sem perder o jeito acolhedor. Sair do lugar de 'a menina simpática' pra 'a referência analítica'."),
+        ("Tradução de análise preditiva em recomendação executiva", "Pegar o que você entrega no operacional e transformar em insumo que muda decisão de gestor."),
+        ("Uso estratégico de IA na rotina analítica", "Trocar fluxos, testar abordagens, pensar onde IA agrega e onde vira ruído. Conversa entre duas pessoas que já usam."),
+        ("Desenhar o lugar profissional ideal dentro da TBC", "Mapear juntas qual carreira combina seus 3 mundos (psicologia + tecnologia + comercial) sem virar comercial puro nem voltar pro RH."),
+        ("Leitura de negócio do cliente final", "Como uma empresa-cliente realmente usa (ou não usa) o que a TBC entrega — pelo olhar de quem está hoje do lado do cliente."),
+        ("Carreira como projeto — pensar profissão com mentalidade de produto", "Ler oportunidade, se posicionar, pensar carreira com a mesma estratégia que se pensa um produto.")
+    ]
+    selecionados_q5 = []
+    for tema, descricao in temas:
+        label_completa = f"**{tema}**  \n_{descricao}_"
+        if st.checkbox(label_completa, key=f"tema_{tema}"):
+            selecionados_q5.append(tema)
+    if st.checkbox("**Outro tema que eu deveria ter colocado e não coloquei**", key="q5_outro_check"):
+        outro_q5 = st.text_input("Conta aqui o tema:", key="q5_outro_text", placeholder="Escreva o tema...")
+        selecionados_q5.append(f"Outro: {outro_q5}" if outro_q5 else "Outro")
+    respostas[q5_texto] = selecionados_q5
 
 # ============================================================
 # BLOCO 3
@@ -783,32 +643,25 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">Formatos de encontro que funcionam pra você:</p>', unsafe_allow_html=True)
-q6_texto = "Formatos de encontro que funcionam pra você:"
-
-formatos = [
-    ("Conversa aberta com pauta solta", "A gente combina o tema e deixa fluir, sem roteiro rígido."),
-    ("Estudo de caso real", "Você traz uma situação concreta (uma conta, uma análise, uma reunião) e a gente destrincha juntas."),
-    ("Análise conjunta de uma entrega sua", "Você me mostra algo que entregou e a gente olha juntas: o que funcionou, o que poderia ser diferente."),
-    ("Simulação", "Eu faço o papel de um gestor/cliente/consultor e você pratica como apresentar, argumentar, posicionar."),
-    ("Shadowing reverso (você me observa)", "Você me observa em alguma situação real minha (apresentação, reunião) e a gente conversa depois."),
-    ("Shadowing direto (eu te observo)", "Eu observo você em alguma entrega real sua e te dou devolutiva."),
-    ("Sessão de provocação", "Eu trago 3-4 perguntas duras sobre um tema, você responde. Bom pra sair do automático."),
-    ("Co-construção de material", "A gente senta junta e constrói algo concreto (one-pager, narrativa, apresentação) que você vai usar de verdade.")
-]
-
-selecionados_q6 = []
-for formato, descricao in formatos:
-    col1, col2 = st.columns([1, 22])
-    with col1:
-        marcado = st.checkbox(" ", key=f"formato_{formato}", label_visibility="collapsed")
-    with col2:
-        st.markdown(f'<div class="opcao-titulo">{formato}</div><div class="opcao-desc">{descricao}</div>', unsafe_allow_html=True)
-    if marcado:
-        selecionados_q6.append(formato)
-respostas[q6_texto] = selecionados_q6
-st.markdown('</div>', unsafe_allow_html=True)
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">Formatos de encontro que funcionam pra você:</p>', unsafe_allow_html=True)
+    q6_texto = "Formatos de encontro que funcionam pra você:"
+    formatos = [
+        ("Conversa aberta com pauta solta", "A gente combina o tema e deixa fluir, sem roteiro rígido."),
+        ("Estudo de caso real", "Você traz uma situação concreta (uma conta, uma análise, uma reunião) e a gente destrincha juntas."),
+        ("Análise conjunta de uma entrega sua", "Você me mostra algo que entregou e a gente olha juntas: o que funcionou, o que poderia ser diferente."),
+        ("Simulação", "Eu faço o papel de um gestor/cliente/consultor e você pratica como apresentar, argumentar, posicionar."),
+        ("Shadowing reverso (você me observa)", "Você me observa em alguma situação real minha (apresentação, reunião) e a gente conversa depois."),
+        ("Shadowing direto (eu te observo)", "Eu observo você em alguma entrega real sua e te dou devolutiva."),
+        ("Sessão de provocação", "Eu trago 3-4 perguntas duras sobre um tema, você responde. Bom pra sair do automático."),
+        ("Co-construção de material", "A gente senta junta e constrói algo concreto (one-pager, narrativa, apresentação) que você vai usar de verdade.")
+    ]
+    selecionados_q6 = []
+    for formato, descricao in formatos:
+        label_completa = f"**{formato}**  \n_{descricao}_"
+        if st.checkbox(label_completa, key=f"formato_{formato}"):
+            selecionados_q6.append(formato)
+    respostas[q6_texto] = selecionados_q6
 
 # ============================================================
 # BLOCO 4
@@ -821,35 +674,20 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">Em uma frase: qual é a SUA maior dor profissional hoje? (Não a do cliente, não a do time. A sua.)</p>', unsafe_allow_html=True)
-q7_texto = "Em uma frase: qual é a SUA maior dor profissional hoje? (Não a do cliente, não a do time. A sua.)"
-respostas[q7_texto] = st.text_area(
-    "Q7",
-    placeholder="Pode ser curto e direto. Uma frase basta.",
-    height=110,
-    key="q7",
-    label_visibility="collapsed"
-)
-st.markdown('</div>', unsafe_allow_html=True)
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">Em uma frase: qual é a SUA maior dor profissional hoje? (Não a do cliente, não a do time. A sua.)</p>', unsafe_allow_html=True)
+    q7_texto = "Em uma frase: qual é a SUA maior dor profissional hoje? (Não a do cliente, não a do time. A sua.)"
+    respostas[q7_texto] = st.text_area("Q7", placeholder="Pode ser curto e direto. Uma frase basta.",
+                                       height=110, key="q7", label_visibility="collapsed")
 
-st.markdown('<div class="pergunta-card">', unsafe_allow_html=True)
-st.markdown('<p class="pergunta-titulo">O que eu não te perguntei aqui e que você acha importante eu saber antes da gente continuar?</p>', unsafe_allow_html=True)
-q8_texto = "O que eu não te perguntei aqui e que você acha importante eu saber antes da gente continuar?"
-respostas[q8_texto] = st.text_area(
-    "Q8",
-    placeholder="Espaço livre. Se não tiver nada, pode pular.",
-    height=110,
-    key="q8",
-    label_visibility="collapsed"
-)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Atualiza progresso final
-renderizar_progresso()
+with st.container(border=True):
+    st.markdown('<p class="pergunta-titulo">O que eu não te perguntei aqui e que você acha importante eu saber antes da gente continuar?</p>', unsafe_allow_html=True)
+    q8_texto = "O que eu não te perguntei aqui e que você acha importante eu saber antes da gente continuar?"
+    respostas[q8_texto] = st.text_area("Q8", placeholder="Espaço livre. Se não tiver nada, pode pular.",
+                                       height=110, key="q8", label_visibility="collapsed")
 
 # ============================================================
-# BOTÃO ENVIAR
+# BOTÃO
 # ============================================================
 if st.button("Enviar respostas pra Elaine"):
     salvar_resposta(respostas)
