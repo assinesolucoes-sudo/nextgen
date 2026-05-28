@@ -8,7 +8,7 @@ import json
 # CONFIGURAÇÃO DA PÁGINA
 # ============================================================
 st.set_page_config(
-    page_title="Mentoria NextGen — Paula",
+    page_title="Mentoria NextGen — Klayton",
     page_icon="✦",
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -123,6 +123,7 @@ st.markdown("""
         margin: 0 0 12px 0;
     }
     .intro-card p:last-child { margin-bottom: 0; }
+    .intro-card strong { color: #5D3A9B; }
 
     /* ===== FAIXA DE BLOCO ===== */
     .block-strip {
@@ -193,16 +194,19 @@ st.markdown("""
         margin: 0 0 18px 0;
         letter-spacing: -0.2px;
     }
+    .pergunta-titulo .sub {
+        font-weight: 400;
+        font-size: 14px;
+        color: #5F5E5A;
+    }
 
     /* ===== RADIO E CHECKBOX — TEXTOS BEM VISÍVEIS ===== */
-    /* Radio container */
     div[data-testid="stRadio"] > div {
         background: transparent !important;
         padding: 0 !important;
         border: none !important;
         gap: 6px !important;
     }
-    /* Radio labels (texto da opção) */
     div[data-testid="stRadio"] label p {
         font-size: 15px !important;
         color: #2c2c2a !important;
@@ -221,7 +225,6 @@ st.markdown("""
         border-color: #d4c3e8 !important;
     }
 
-    /* Checkbox container e label */
     div[data-testid="stCheckbox"] {
         background: #faf9fc !important;
         padding: 12px 16px !important;
@@ -365,7 +368,7 @@ st.markdown("""
 # ============================================================
 RESPOSTAS_DIR = Path("respostas")
 RESPOSTAS_DIR.mkdir(exist_ok=True)
-ARQUIVO_RESPOSTAS = RESPOSTAS_DIR / "paula_respostas.json"
+ARQUIVO_RESPOSTAS = RESPOSTAS_DIR / "klayton_respostas.json"
 
 def salvar_resposta(dados):
     payload = {
@@ -390,7 +393,7 @@ if modo_admin:
     st.markdown("""
     <div class="nextgen-header">
         <div class="nextgen-brand">Modo Administrador</div>
-        <h1 class="nextgen-title">Respostas — Paula</h1>
+        <h1 class="nextgen-title">Respostas — Klayton</h1>
     </div>
     """, unsafe_allow_html=True)
 
@@ -420,12 +423,12 @@ if modo_admin:
         st.download_button(
             label="⬇ Baixar respostas (JSON)",
             data=json.dumps(dados, ensure_ascii=False, indent=2),
-            file_name=f"paula_respostas_{datetime.now().strftime('%Y%m%d')}.json",
+            file_name=f"klayton_respostas_{datetime.now().strftime('%Y%m%d')}.json",
             mime="application/json"
         )
 
         st.markdown("---")
-        st.markdown("##### Limpar resposta (pra resetar antes de enviar pra Paula)")
+        st.markdown("##### Limpar resposta (pra resetar antes de enviar pro Klayton)")
         if st.button("🗑 Apagar resposta atual"):
             ARQUIVO_RESPOSTAS.unlink()
             st.success("Resposta apagada. Formulário pronto pra ser respondido de novo.")
@@ -440,7 +443,7 @@ if ja_respondeu() and not modo_preview:
     <div class="success-card">
         <div class="success-check">✓</div>
         <h2>Você já respondeu!</h2>
-        <p>Obrigada, Paula. Vou ler com calma e a gente conversa no nosso próximo encontro.</p>
+        <p>Valeu, Klayton. Vou ler com calma e a gente conversa no nosso próximo encontro.</p>
         <p style="margin-top: 20px; opacity: 0.85; font-size: 14px;">— Elaine</p>
     </div>
     """, unsafe_allow_html=True)
@@ -454,7 +457,7 @@ st.markdown("""
     <div class="nextgen-brand">Programa NextGen — 2ª Edição</div>
     <h1 class="nextgen-title">Pra a gente se aprofundar</h1>
     <p class="nextgen-subtitle">
-        Paula, esse formulário não é uma pesquisa. É uma conversa por escrito,
+        Klayton, esse formulário não é pesquisa de RH. É uma conversa por escrito,
         pra eu te apoiar melhor nos próximos meses da mentoria.
     </p>
 </div>
@@ -462,9 +465,9 @@ st.markdown("""
 
 st.markdown("""
 <div class="intro-card">
-    <p>Cada pergunta aqui veio do que você me contou no nosso primeiro encontro, no dia 15/05. A ideia é a gente ir mais fundo, não voltar pra trás.</p>
-    <p>A maioria é só marcar opção — pra não tomar muito seu tempo. Tem 2 perguntas escritas curtas no final.</p>
-    <p>Responde com calma, no seu tempo. Quando terminar, é só clicar em enviar lá embaixo.</p>
+    <p>Você manda bem em IA pra desenvolver — ChatGPT, Claude, Gemini. Então não é por aí que eu vou te ajudar; isso você já domina.</p>
+    <p><strong>Importante, pra gente já começar alinhado:</strong> eu não vou te ajudar a programar — não é minha praia, e você não precisa de mim pra isso. O que eu trago é o que fica em volta do código: como você organiza, documenta, apresenta e faz o que cria ser reconhecido. É aí que eu somo.</p>
+    <p>Quase tudo aqui é só marcar opção — pra não tomar muito seu tempo. Tem 1 pergunta escrita só no final. Cada pergunta veio do que você me contou no nosso primeiro encontro, no dia 13/05.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -472,46 +475,60 @@ st.markdown("""
 # PROGRESSO
 # ============================================================
 def contar_progresso():
-    total = 8
+    total = 7
     respondidas = 0
+
+    # Q1 radio
     if st.session_state.get("q1_radio") is not None:
         if st.session_state.get("q1_radio") != "Outro" or st.session_state.get("q1_outro", "").strip():
             respondidas += 1
-    opcoes_q2_list = ["A pressão por número mês a mês", "A competição entre colegas",
-        "O relacionamento com cliente ficar transacional", "A sensação de não controlar o resultado",
-        "A exposição em rankings e dashboards", "Ter que defender produto sem acreditar"]
+
+    # Q2 checkbox
+    opcoes_q2_list = ["Mergulho sozinho até sair", "Jogo na IA pra destravar",
+        "Testo direto e vejo o que acontece", "Chamo alguém da equipe pra pensar junto",
+        "Paro e vou fazer outra coisa"]
     if any(st.session_state.get(f"q2_{op}", False) for op in opcoes_q2_list) or \
        (st.session_state.get("q2_outro_check") and st.session_state.get("q2_outro_text", "").strip()):
         respondidas += 1
-    if st.session_state.get("q3_radio") is not None:
-        if st.session_state.get("q3_radio") != "Outro" or st.session_state.get("q3_outro", "").strip():
-            respondidas += 1
-    opcoes_q4_list = ["Resolver um problema complexo", "Ver alguém usando o que entreguei",
-        "Aprender algo novo", "Conexão com pessoas", "Antecipar algo que ninguém viu",
-        "Ter autonomia pra decidir", "Ser reconhecida pelo que faço"]
+
+    # Q3 checkbox
+    opcoes_q3_list = ["Explicar de novo algo que já resolvi antes", "Parar o que estou fazendo no meio",
+        "Gosto, me energiza ajudar", "Sinto que vira só comigo, não fica registrado"]
+    if any(st.session_state.get(f"q3_{op}", False) for op in opcoes_q3_list) or \
+       (st.session_state.get("q3_outro_check") and st.session_state.get("q3_outro_text", "").strip()):
+        respondidas += 1
+
+    # Q4 checkbox
+    opcoes_q4_list = ["Criar uma ferramenta do zero", "Ver alguém usando algo que eu fiz",
+        "Resolver um problema difícil", "Ajudar um colega a destravar",
+        "Aprender uma tecnologia nova", "Ter autonomia pra fazer do meu jeito"]
     if any(st.session_state.get(f"q4_{op}", False) for op in opcoes_q4_list) or \
        (st.session_state.get("q4_outro_check") and st.session_state.get("q4_outro_text", "").strip()):
         respondidas += 1
-    temas_lista = ["Ler o cliente por trás do CRM", "A ponte entre Inteligência Comercial e operação",
-        "Posicionamento de quem vem do RH em ambiente técnico-comercial",
-        "Tradução de análise preditiva em recomendação executiva",
-        "Uso estratégico de IA na rotina analítica",
-        "Desenhar o lugar profissional ideal dentro da TBC",
-        "Leitura de negócio do cliente final",
-        "Carreira como projeto — pensar profissão com mentalidade de produto"]
+
+    # Q5 checkbox (temas)
+    temas_lista = ["Fazer minhas ferramentas chegarem mais longe na TBC",
+        "Ter um jeito de validar antes de subir pro cliente",
+        "Registrar o que descubro pra não ficar só na minha cabeça",
+        "Explicar o valor do que faço pra quem não é técnico",
+        "Estruturar uma ideia minha pra ela ser levada a sério"]
     if any(st.session_state.get(f"tema_{t}", False) for t in temas_lista) or \
        (st.session_state.get("q5_outro_check") and st.session_state.get("q5_outro_text", "").strip()):
         respondidas += 1
-    formatos_lista = ["Conversa aberta com pauta solta", "Estudo de caso real",
-        "Análise conjunta de uma entrega sua", "Simulação",
-        "Shadowing reverso (você me observa)", "Shadowing direto (eu te observo)",
-        "Sessão de provocação", "Co-construção de material"]
+
+    # Q6 checkbox (formatos)
+    formatos_lista = ["Pegar uma ferramenta real sua e trabalhar em cima dela",
+        "Eu penso em voz alta e a gente constrói um material junto",
+        "Estudo de caso concreto", "Conversa direta sobre um problema específico",
+        "Eu te observo numa entrega real e te dou retorno",
+        "Você me observa em algo meu e conversamos depois"]
     if any(st.session_state.get(f"formato_{f}", False) for f in formatos_lista):
         respondidas += 1
+
+    # Q7 escrita
     if st.session_state.get("q7", "").strip():
         respondidas += 1
-    if st.session_state.get("q8", "").strip():
-        respondidas += 1
+
     return respondidas, total
 
 respondidas, total = contar_progresso()
@@ -533,18 +550,18 @@ respostas = {}
 # ============================================================
 st.markdown("""
 <div class="block-strip">
-    <div class="block-strip-label">Bloco 1 — Pra começar</div>
-    <h2 class="block-strip-title">Sobre você, agora</h2>
-    <p class="block-strip-desc">Algumas perguntas curtas baseadas no que você me contou. A ideia é aprofundar, não repetir.</p>
+    <div class="block-strip-label">Bloco 1 — Como você trabalha</div>
+    <h2 class="block-strip-title">Do jeito que as coisas acontecem</h2>
+    <p class="block-strip-desc">Algumas perguntas curtas a partir do que você me contou. Sem certo ou errado — é pra eu entender como você funciona.</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Q1
 with st.container(border=True):
-    st.markdown('<p class="pergunta-titulo">Você se descreveu como dinâmica e falante. Em momentos de pressão no trabalho, você tende a:</p>', unsafe_allow_html=True)
-    q1_texto = "Você se descreveu como dinâmica e falante. Em momentos de pressão no trabalho, você tende a:"
-    opcoes_q1 = ["Falar mais e processar em voz alta", "Me recolher e processar internamente",
-                 "Buscar alguém pra dividir e pensar junto", "Acelerar a execução pra dar conta", "Outro"]
+    st.markdown('<p class="pergunta-titulo">Você me contou que às vezes vai direto na DEV do cliente — "melhor feito que mal feito". Quando você faz isso, o que mais pesa na decisão?</p>', unsafe_allow_html=True)
+    q1_texto = 'Você me contou que às vezes vai direto na DEV do cliente — "melhor feito que mal feito". Quando você faz isso, o que mais pesa na decisão?'
+    opcoes_q1 = ["A pressa de resolver logo", "Confiança de que vai dar certo",
+                 "Não ter um ambiente meu pra testar antes", "Prefiro ver quebrar e corrigir na hora", "Outro"]
     escolha_q1 = st.radio("Q1", opcoes_q1, index=None, key="q1_radio", label_visibility="collapsed")
     if escolha_q1 == "Outro":
         outro_q1 = st.text_input("Conta aqui o que é:", key="q1_outro", placeholder="Escreva sua resposta...")
@@ -554,11 +571,11 @@ with st.container(border=True):
 
 # Q2
 with st.container(border=True):
-    st.markdown('<p class="pergunta-titulo">Você recusou a posição comercial pura. Pensando no que mais te incomoda em meta dura, marque o que pesa de verdade (pode marcar mais de uma):</p>', unsafe_allow_html=True)
-    q2_texto = "Você recusou a posição comercial pura. Pensando no que mais te incomoda em meta dura, marque o que pesa de verdade (pode marcar mais de uma):"
-    opcoes_q2 = ["A pressão por número mês a mês", "A competição entre colegas",
-                 "O relacionamento com cliente ficar transacional", "A sensação de não controlar o resultado",
-                 "A exposição em rankings e dashboards", "Ter que defender produto sem acreditar"]
+    st.markdown('<p class="pergunta-titulo">Quando um problema técnico trava e não destrava fácil, o que você faz primeiro? <span class="sub">(marque o que mais acontece)</span></p>', unsafe_allow_html=True)
+    q2_texto = "Quando um problema técnico trava e não destrava fácil, o que você faz primeiro? (marque o que mais acontece)"
+    opcoes_q2 = ["Mergulho sozinho até sair", "Jogo na IA pra destravar",
+                 "Testo direto e vejo o que acontece", "Chamo alguém da equipe pra pensar junto",
+                 "Paro e vou fazer outra coisa"]
     selecionados_q2 = []
     for opcao in opcoes_q2:
         if st.checkbox(opcao, key=f"q2_{opcao}"):
@@ -570,25 +587,37 @@ with st.container(border=True):
 
 # Q3
 with st.container(border=True):
-    st.markdown('<p class="pergunta-titulo">Quando uma análise sua não é usada por quem deveria usar, o que vem primeiro em você:</p>', unsafe_allow_html=True)
-    q3_texto = "Quando uma análise sua não é usada por quem deveria usar, o que vem primeiro em você:"
-    opcoes_q3 = ["Frustração com quem não usou", "Autocrítica — talvez eu não tenha apresentado bem",
-                 "Vontade de explicar melhor pra próxima", "Aceitação — faz parte do processo",
-                 "Cansaço — já vi esse filme antes", "Outro"]
-    escolha_q3 = st.radio("Q3", opcoes_q3, index=None, key="q3_radio", label_visibility="collapsed")
-    if escolha_q3 == "Outro":
-        outro_q3 = st.text_input("Conta aqui o que é:", key="q3_outro", placeholder="Escreva sua resposta...")
-        respostas[q3_texto] = f"Outro: {outro_q3}" if outro_q3 else "Outro"
-    elif escolha_q3:
-        respostas[q3_texto] = escolha_q3
+    st.markdown('<p class="pergunta-titulo">Você é referência pra equipe no SCC — ajuda os consultores e os colegas. Quando te procuram, o que mais te pega? <span class="sub">(pode marcar mais de uma)</span></p>', unsafe_allow_html=True)
+    q3_texto = "Você é referência pra equipe no SCC — ajuda os consultores e os colegas. Quando te procuram, o que mais te pega? (pode marcar mais de uma)"
+    opcoes_q3 = ["Explicar de novo algo que já resolvi antes", "Parar o que estou fazendo no meio",
+                 "Gosto, me energiza ajudar", "Sinto que vira só comigo, não fica registrado"]
+    selecionados_q3 = []
+    for opcao in opcoes_q3:
+        if st.checkbox(opcao, key=f"q3_{opcao}"):
+            selecionados_q3.append(opcao)
+    if st.checkbox("Outro", key="q3_outro_check"):
+        outro_q3 = st.text_input("Conta aqui o que é:", key="q3_outro_text", placeholder="Escreva sua resposta...")
+        selecionados_q3.append(f"Outro: {outro_q3}" if outro_q3 else "Outro")
+    respostas[q3_texto] = selecionados_q3
+
+# ============================================================
+# BLOCO 2
+# ============================================================
+st.markdown("""
+<div class="block-strip">
+    <div class="block-strip-label">Bloco 2 — Onde a gente vai</div>
+    <h2 class="block-strip-title">O que faria diferença pra você</h2>
+    <p class="block-strip-desc">Você já cria ferramentas e leva pra TBC. O que eu trago aqui é o que fica em volta disso — apresentar, documentar, dar visibilidade. Marca o que mais faz sentido pra gente trabalhar. Pode marcar quantos quiser.</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Q4
 with st.container(border=True):
-    st.markdown('<p class="pergunta-titulo">O que mais te energiza no trabalho hoje (marca quantas quiser):</p>', unsafe_allow_html=True)
-    q4_texto = "O que mais te energiza no trabalho hoje (marca quantas quiser):"
-    opcoes_q4 = ["Resolver um problema complexo", "Ver alguém usando o que entreguei",
-                 "Aprender algo novo", "Conexão com pessoas", "Antecipar algo que ninguém viu",
-                 "Ter autonomia pra decidir", "Ser reconhecida pelo que faço"]
+    st.markdown('<p class="pergunta-titulo">O que mais te dá energia no trabalho hoje? <span class="sub">(marca quantas quiser)</span></p>', unsafe_allow_html=True)
+    q4_texto = "O que mais te dá energia no trabalho hoje? (marca quantas quiser)"
+    opcoes_q4 = ["Criar uma ferramenta do zero", "Ver alguém usando algo que eu fiz",
+                 "Resolver um problema difícil", "Ajudar um colega a destravar",
+                 "Aprender uma tecnologia nova", "Ter autonomia pra fazer do meu jeito"]
     selecionados_q4 = []
     for opcao in opcoes_q4:
         if st.checkbox(opcao, key=f"q4_{opcao}"):
@@ -598,37 +627,24 @@ with st.container(border=True):
         selecionados_q4.append(f"Outro: {outro_q4}" if outro_q4 else "Outro")
     respostas[q4_texto] = selecionados_q4
 
-# ============================================================
-# BLOCO 2
-# ============================================================
-st.markdown("""
-<div class="block-strip">
-    <div class="block-strip-label">Bloco 2 — Onde a gente vai</div>
-    <h2 class="block-strip-title">Temas pra aprofundar</h2>
-    <p class="block-strip-desc">Pensando na transição que você está vivendo — do RH pro comercial com pegada analítica — marca os temas que fazem mais sentido pra gente se aprofundar nos próximos meses. Pode marcar quantos quiser. Vou trazer pra mesa minha vivência de transição de carreira dentro do ecossistema da TBC, especialmente nas áreas comercial e controladoria.</p>
-</div>
-""", unsafe_allow_html=True)
-
+# Q5 (temas)
 with st.container(border=True):
-    st.markdown('<p class="pergunta-titulo">Quais temas você quer aprofundar nas mentorias:</p>', unsafe_allow_html=True)
-    q5_texto = "Quais temas você quer aprofundar nas mentorias:"
+    st.markdown('<p class="pergunta-titulo">Você falou que cria ferramentas e leva pra TBC, e que quer construir uma API de comunicação dentro do Winthor. Pensando nisso, o que faria mais diferença pra você nos próximos meses? <span class="sub">(marca quantos quiser)</span></p>', unsafe_allow_html=True)
+    q5_texto = "Você falou que cria ferramentas e leva pra TBC, e que quer construir uma API de comunicação dentro do Winthor. Pensando nisso, o que faria mais diferença pra você nos próximos meses? (marca quantos quiser)"
     temas = [
-        ("Ler o cliente por trás do CRM", "Ir além do dado: o que faz uma conta fechar ou travar, o que está por trás dos números."),
-        ("A ponte entre Inteligência Comercial e operação", "Como o consultor de campo recebe (ou ignora) o que você entrega. Por que análise vira ação ou vira slide."),
-        ("Posicionamento de quem vem do RH em ambiente técnico-comercial", "Construir autoridade sem perder o jeito acolhedor. Sair do lugar de 'a menina simpática' pra 'a referência analítica'."),
-        ("Tradução de análise preditiva em recomendação executiva", "Pegar o que você entrega no operacional e transformar em insumo que muda decisão de gestor."),
-        ("Uso estratégico de IA na rotina analítica", "Trocar fluxos, testar abordagens, pensar onde IA agrega e onde vira ruído. Conversa entre duas pessoas que já usam."),
-        ("Desenhar o lugar profissional ideal dentro da TBC", "Mapear juntas qual carreira combina seus 3 mundos (psicologia + tecnologia + comercial) sem virar comercial puro nem voltar pro RH."),
-        ("Leitura de negócio do cliente final", "Como uma empresa-cliente realmente usa (ou não usa) o que a TBC entrega — pelo olhar de quem está hoje do lado do cliente."),
-        ("Carreira como projeto — pensar profissão com mentalidade de produto", "Ler oportunidade, se posicionar, pensar carreira com a mesma estratégia que se pensa um produto.")
+        ("Fazer minhas ferramentas chegarem mais longe na TBC", "Não programar junto — mas construir a forma de apresentar o valor delas pra quem decide."),
+        ("Ter um jeito de validar antes de subir pro cliente", "Um ritual seu de checagem — processo, não código."),
+        ("Registrar o que descubro pra não ficar só na minha cabeça", "Um jeito leve de documentar o que você resolve. Terreno de processo, não de desenvolvimento."),
+        ("Explicar o valor do que faço pra quem não é técnico", "Traduzir a entrega técnica em impacto que gestor e cliente entendem."),
+        ("Estruturar uma ideia minha pra ela ser levada a sério", "Organizar a narrativa e a apresentação do projeto — não o desenvolvimento técnico dele.")
     ]
     selecionados_q5 = []
     for tema, descricao in temas:
         label_completa = f"**{tema}**  \n_{descricao}_"
         if st.checkbox(label_completa, key=f"tema_{tema}"):
             selecionados_q5.append(tema)
-    if st.checkbox("**Outro tema que eu deveria ter colocado e não coloquei**", key="q5_outro_check"):
-        outro_q5 = st.text_input("Conta aqui o tema:", key="q5_outro_text", placeholder="Escreva o tema...")
+    if st.checkbox("**Outro que eu deveria ter colocado e não coloquei**", key="q5_outro_check"):
+        outro_q5 = st.text_input("Conta aqui o que é:", key="q5_outro_text", placeholder="Escreva...")
         selecionados_q5.append(f"Outro: {outro_q5}" if outro_q5 else "Outro")
     respostas[q5_texto] = selecionados_q5
 
@@ -639,7 +655,7 @@ st.markdown("""
 <div class="block-strip">
     <div class="block-strip-label">Bloco 3 — Como a gente vai</div>
     <h2 class="block-strip-title">Formato dos encontros</h2>
-    <p class="block-strip-desc">Pensa em como VOCÊ aprende e troca melhor. Cada pessoa tem um jeito. Quais formatos funcionam mais pra você (sugiro marcar 2 ou 3):</p>
+    <p class="block-strip-desc">Pensa em como VOCÊ troca melhor. Cada um tem um jeito. Quais formatos funcionam pra você (sugiro marcar 2 ou 3):</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -647,14 +663,12 @@ with st.container(border=True):
     st.markdown('<p class="pergunta-titulo">Formatos de encontro que funcionam pra você:</p>', unsafe_allow_html=True)
     q6_texto = "Formatos de encontro que funcionam pra você:"
     formatos = [
-        ("Conversa aberta com pauta solta", "A gente combina o tema e deixa fluir, sem roteiro rígido."),
-        ("Estudo de caso real", "Você traz uma situação concreta (uma conta, uma análise, uma reunião) e a gente destrincha juntas."),
-        ("Análise conjunta de uma entrega sua", "Você me mostra algo que entregou e a gente olha juntas: o que funcionou, o que poderia ser diferente."),
-        ("Simulação", "Eu faço o papel de um gestor/cliente/consultor e você pratica como apresentar, argumentar, posicionar."),
-        ("Shadowing reverso (você me observa)", "Você me observa em alguma situação real minha (apresentação, reunião) e a gente conversa depois."),
-        ("Shadowing direto (eu te observo)", "Eu observo você em alguma entrega real sua e te dou devolutiva."),
-        ("Sessão de provocação", "Eu trago 3-4 perguntas duras sobre um tema, você responde. Bom pra sair do automático."),
-        ("Co-construção de material", "A gente senta junta e constrói algo concreto (one-pager, narrativa, apresentação) que você vai usar de verdade.")
+        ("Pegar uma ferramenta real sua e trabalhar em cima dela", "Você traz algo que criou e a gente trabalha em cima — concreto, não teórico."),
+        ("Eu penso em voz alta e a gente constrói um material junto", "Ex: como documentar algo, como apresentar uma ferramenta. Material de comunicação, não código."),
+        ("Estudo de caso concreto", "A gente pega uma situação real e destrincha junto."),
+        ("Conversa direta sobre um problema específico", "Você chega com um problema pontual e a gente foca nele."),
+        ("Eu te observo numa entrega real e te dou retorno", "Acompanho você numa entrega sua e dou devolutiva depois."),
+        ("Você me observa em algo meu e conversamos depois", "Você me vê numa situação real minha (apresentação, reunião) e conversamos.")
     ]
     selecionados_q6 = []
     for formato, descricao in formatos:
@@ -669,22 +683,16 @@ with st.container(border=True):
 st.markdown("""
 <div class="block-strip">
     <div class="block-strip-label">Bloco 4 — Pra fechar</div>
-    <h2 class="block-strip-title">O que você quer me dizer</h2>
-    <p class="block-strip-desc">As duas últimas perguntas. Pode ser bem curto.</p>
+    <h2 class="block-strip-title">Uma coisa só, no seu terreno</h2>
+    <p class="block-strip-desc">A última. Pode ser curto e direto.</p>
 </div>
 """, unsafe_allow_html=True)
 
 with st.container(border=True):
-    st.markdown('<p class="pergunta-titulo">Em uma frase: qual é a SUA maior dor profissional hoje? (Não a do cliente, não a do time. A sua.)</p>', unsafe_allow_html=True)
-    q7_texto = "Em uma frase: qual é a SUA maior dor profissional hoje? (Não a do cliente, não a do time. A sua.)"
-    respostas[q7_texto] = st.text_area("Q7", placeholder="Pode ser curto e direto. Uma frase basta.",
+    st.markdown('<p class="pergunta-titulo">Me descreve em 2-3 linhas uma ferramenta que você criou e levou pra TBC. O que ela resolve, e quem usa?</p>', unsafe_allow_html=True)
+    q7_texto = "Me descreve em 2-3 linhas uma ferramenta que você criou e levou pra TBC. O que ela resolve, e quem usa?"
+    respostas[q7_texto] = st.text_area("Q7", placeholder="Pode ser direto. O nome dela, o que faz, e quem usa no dia a dia.",
                                        height=110, key="q7", label_visibility="collapsed")
-
-with st.container(border=True):
-    st.markdown('<p class="pergunta-titulo">O que eu não te perguntei aqui e que você acha importante eu saber antes da gente continuar?</p>', unsafe_allow_html=True)
-    q8_texto = "O que eu não te perguntei aqui e que você acha importante eu saber antes da gente continuar?"
-    respostas[q8_texto] = st.text_area("Q8", placeholder="Espaço livre. Se não tiver nada, pode pular.",
-                                       height=110, key="q8", label_visibility="collapsed")
 
 # ============================================================
 # BOTÃO
